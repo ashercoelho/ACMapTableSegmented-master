@@ -1,18 +1,18 @@
 //
 //  ViewController.m
-//  PullToReveal
+//  ACMapTableSegmented-example
 //
-//  Created by Marcus Kida on 02.11.12.
-//  Copyright (c) 2012 Marcus Kida. All rights reserved.
+//  Created by Asher Coelho on 8/1/13.
+//  Copyright (c) 2013 Asher Coelho. All rights reserved.
 //
+
 
 #import "ViewController.h"
 
-@interface ViewController () <KIPullToRevealDelegate>
+@interface ViewController () <ACMapTableSegmentedDelegate>
 {
     NSArray *aLatitudes;
     NSArray *aLongitudes;
-//    NSArray *aTitles;
     NSArray *noticias;
     NSArray *transito;
     NSArray *usuarios;
@@ -42,7 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.pullToRevealDelegate = self;
+    self.mapTableSegmentedDelegate = self;
     self.centerUserLocation = NO;
     
 	// Do any additional setup after loading the view, typically from a nib.

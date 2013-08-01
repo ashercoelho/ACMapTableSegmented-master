@@ -1,9 +1,8 @@
 //
 //  AppDelegate.h
-//  PullToReveal
+//  ACMapTableSegmented-example
 //
-//  Created by Marcus Kida on 02.11.12.
-//  Copyright (c) 2012 Marcus Kida. All rights reserved.
+//  Created by Asher Coelho on 8/1/13.
 //
 
 #import <UIKit/UIKit.h>

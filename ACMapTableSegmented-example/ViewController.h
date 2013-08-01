@@ -1,15 +1,15 @@
 //
 //  ViewController.h
-//  PullToReveal
+//  ACMapTableSegmented-example
 //
-//  Created by Marcus Kida on 02.11.12.
-//  Copyright (c) 2012 Marcus Kida. All rights reserved.
+//  Created by Asher Coelho on 8/1/13.
+//  Copyright (c) 2013 Asher Coelho. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "KIPullToRevealViewController.h"
+#import "ACMapTableSegmentedViewController.h"
 #import "KIPullToRevealCell.h"
 
-@interface ViewController : KIPullToRevealViewController
+@interface ViewController : ACMapTableSegmentedViewController
 
 @end

@@ -12,6 +12,7 @@
 		39DE43E617AAC59100675F96 /* KIPullToRevealCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39DE43DF17AAC59100675F96 /* KIPullToRevealCell.xib */; };
 		39DE43E717AAC59100675F96 /* KIPullToRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39DE43E117AAC59100675F96 /* KIPullToRevealViewController.m */; };
 		39DE43E817AAC59100675F96 /* SDSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 39DE43E417AAC59100675F96 /* SDSegmentedControl.m */; };
+		39DE43F517AAD91000675F96 /* ACMapTableSegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39DE43F417AAD8E100675F96 /* ACMapTableSegmentedViewController.m */; };
 		BE1E46831647CFE7007BDCB2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE1E46821647CFE7007BDCB2 /* CoreLocation.framework */; };
 		BEFC1AF21643F81F00EA2194 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEFC1AF11643F81F00EA2194 /* UIKit.framework */; };
 		BEFC1AF41643F81F00EA2194 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEFC1AF31643F81F00EA2194 /* Foundation.framework */; };
@@ -36,6 +37,8 @@
 		39DE43E117AAC59100675F96 /* KIPullToRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIPullToRevealViewController.m; sourceTree = "<group>"; };
 		39DE43E317AAC59100675F96 /* SDSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDSegmentedControl.h; sourceTree = "<group>"; };
 		39DE43E417AAC59100675F96 /* SDSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDSegmentedControl.m; sourceTree = "<group>"; };
+		39DE43F317AAD8E100675F96 /* ACMapTableSegmentedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACMapTableSegmentedViewController.h; sourceTree = "<group>"; };
+		39DE43F417AAD8E100675F96 /* ACMapTableSegmentedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACMapTableSegmentedViewController.m; sourceTree = "<group>"; };
 		BE1E46821647CFE7007BDCB2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BEFC1AED1643F81F00EA2194 /* ACMapTableSegmented-example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ACMapTableSegmented-example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEFC1AF11643F81F00EA2194 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -76,6 +79,8 @@
 		39DE43DB17AAC59100675F96 /* ACMapTableSegmented */ = {
 			isa = PBXGroup;
 			children = (
+				39DE43F317AAD8E100675F96 /* ACMapTableSegmentedViewController.h */,
+				39DE43F417AAD8E100675F96 /* ACMapTableSegmentedViewController.m */,
 				39DE43DC17AAC59100675F96 /* KIPullToReveal */,
 				39DE43E217AAC59100675F96 /* SDSegmentedControl */,
 			);
@@ -235,6 +240,7 @@
 				39DE43E517AAC59100675F96 /* KIPullToRevealCell.m in Sources */,
 				39DE43E717AAC59100675F96 /* KIPullToRevealViewController.m in Sources */,
 				39DE43E817AAC59100675F96 /* SDSegmentedControl.m in Sources */,
+				39DE43F517AAD91000675F96 /* ACMapTableSegmentedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
