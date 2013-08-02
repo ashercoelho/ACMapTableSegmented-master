@@ -19,7 +19,8 @@
     double _lastDragOffset;
     
     @public
-    MKMapView *_mapView;
+//    MKMapView *_mapView;
+    GMSMapView *_googleMapView;
     __weak id <ACMapTableSegmentedDelegate> _mapTableSegmentedDelegate;
     BOOL _centerUserLocation;
 }
@@ -41,7 +42,8 @@
 {
     [super viewDidLoad];
 
-    [self initializeMapView];
+//    [self initializeMapView];
+    [self initializeGoogleMapView];
     [self initalizeToolbar];
 }
 
@@ -58,22 +60,45 @@
 }
 
 #pragma mark - Private methods
-- (void) initializeMapView
+- (void)initializeGoogleMapView
 {
-    [self.tableView setContentInset:UIEdgeInsetsMake(kKIPTRTableViewContentInsetX,0,0,0)];
-    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top)];
-    [_mapView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    [_mapView setShowsUserLocation:YES];
-    [_mapView setUserInteractionEnabled:NO];
+    [self.tableView setContentInset:UIEdgeInsetsMake(kKIPTRTableViewContentInsetX,0,0,0)];//
     
-    if(_centerUserLocation)
-    {
-        [self centerToUserLocation];
-        [self zoomToUserLocation];
-    }
-        
-    [self.tableView insertSubview:_mapView aboveSubview:self.tableView];
+    // Create a GMSCameraPosition that tells the map to display the
+    // coordinate -33.86,151.20 at zoom level 6.
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
+                                                            longitude:151.20
+                                                                 zoom:6];
+    _googleMapView = [GMSMapView mapWithFrame:CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top) camera:camera];//
+    [_googleMapView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];//
+    _googleMapView.myLocationEnabled = YES;
+    
+    [self.tableView insertSubview:_googleMapView aboveSubview:self.tableView];
+    
+    // Creates a marker in the center of the map.
+    GMSMarker *marker = [[GMSMarker alloc] init];
+    marker.position = CLLocationCoordinate2DMake(-33.86, 151.20);
+    marker.title = @"Sydney";
+    marker.snippet = @"Australia";
+    marker.map = _googleMapView;
 }
+
+//- (void) initializeMapView
+//{
+//    [self.tableView setContentInset:UIEdgeInsetsMake(kKIPTRTableViewContentInsetX,0,0,0)];
+//    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top)];
+//    [_mapView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+//    [_mapView setShowsUserLocation:YES];
+//    [_mapView setUserInteractionEnabled:NO];
+//    
+//    if(_centerUserLocation)
+//    {
+//        [self centerToUserLocation];
+//        [self zoomToUserLocation];
+//    }
+//        
+//    [self.tableView insertSubview:_mapView aboveSubview:self.tableView];
+//}
 
 - (void) initalizeToolbar
 {
@@ -91,19 +116,19 @@
     [self.tableView insertSubview:_toolbar aboveSubview:self.tableView];
 }
 
-- (void) centerToUserLocation
-{
-    [_mapView setCenterCoordinate:_mapView.userLocation.coordinate animated:YES];
-}
-
-- (void) zoomToUserLocation
-{
-    MKCoordinateRegion mapRegion;
-    mapRegion.center = _mapView.userLocation.coordinate;
-    mapRegion.span.latitudeDelta = 0.2;
-    mapRegion.span.longitudeDelta = 0.2;
-    [_mapView setRegion:mapRegion animated: YES];
-}
+//- (void) centerToUserLocation
+//{
+//    [_mapView setCenterCoordinate:_mapView.userLocation.coordinate animated:YES];
+//}
+//
+//- (void) zoomToUserLocation
+//{
+//    MKCoordinateRegion mapRegion;
+//    mapRegion.center = _mapView.userLocation.coordinate;
+//    mapRegion.span.latitudeDelta = 0.2;
+//    mapRegion.span.longitudeDelta = 0.2;
+//    [_mapView setRegion:mapRegion animated: YES];
+//}
 
 #pragma mark - ScrollView Delegate
 - (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -113,8 +138,8 @@
 
     if(contentOffset < kKIPTRTableViewContentInsetX*-1)
     {
-        [self zoomMapToFitAnnotations];
-        [_mapView setUserInteractionEnabled:YES];
+//        [self zoomMapToFitAnnotations];
+        [_googleMapView setUserInteractionEnabled:YES];
         
         [UIView animateWithDuration:kKIPTRAnimationDuration
                          animations:^()
@@ -125,7 +150,7 @@
     }
     else if (contentOffset >= kKIPTRTableViewContentInsetX*-1)
     {
-        [_mapView setUserInteractionEnabled:NO];
+        [_googleMapView setUserInteractionEnabled:YES];
         
         [UIView animateWithDuration:kKIPTRAnimationDuration
                          animations:^()
@@ -136,8 +161,8 @@
         
         if(_centerUserLocation)
         {
-            [self centerToUserLocation];
-            [self zoomToUserLocation];
+//            [self centerToUserLocation];
+//            [self zoomToUserLocation];
         }
         
         [self.tableView scrollsToTop];
@@ -152,26 +177,33 @@
         _scrollViewIsDraggedDownwards = YES;
     else
         _scrollViewIsDraggedDownwards = NO;
+    
+//    NSLog(@"contentOffset:%f",contentOffset);
+//    NSLog(@"_lastDragOffset:%f",_lastDragOffset);
+//    NSLog(@"_scrollViewIsDraggedDownwards:%c",_scrollViewIsDraggedDownwards);
 
+    NSLog(@"camera:%@",_googleMapView.camera.description);
+    
     if (!_scrollViewIsDraggedDownwards)
     {
-        [_mapView setFrame:
-         CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top)
-         ];
-        [_mapView setUserInteractionEnabled:NO];
+//        [_googleMapView removeFromSuperview];
+        [_googleMapView setFrame:CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top)];
+    
+        
+        [_googleMapView setUserInteractionEnabled:NO];
 
         [self.tableView setContentInset:UIEdgeInsetsMake(kKIPTRTableViewContentInsetX,0,0,0)];
         
         if(_centerUserLocation)
         {
-            [self centerToUserLocation];
-            [self zoomToUserLocation];
+//            [self centerToUserLocation];
+//            [self zoomToUserLocation];
         }
         
         [self.tableView scrollsToTop];
     }
 
-    if(contentOffset >= -50)
+    if(contentOffset >= -50)//Quando o toolbar encosta no topo
     {
         [_toolbar removeFromSuperview];
         [_toolbar setFrame:CGRectMake(0, contentOffset, self.tableView.bounds.size.width, 50)];
@@ -184,16 +216,16 @@
         [self.tableView insertSubview:_toolbar aboveSubview:self.tableView];
         
         // Resize map to viewable size
-        [_mapView setFrame:
-         CGRectMake(0, self.tableView.bounds.origin.y, self.tableView.bounds.size.width, contentOffset*-1)
-         ];
-        [self zoomMapToFitAnnotations];
+        [_googleMapView setFrame:CGRectMake(0, self.tableView.bounds.origin.y, self.tableView.bounds.size.width, contentOffset*-1)];
+        
+
+//        [self zoomMapToFitAnnotations];
     }
     
     if(_centerUserLocation)
     {
-        [self centerToUserLocation];
-        [self zoomToUserLocation];
+//        [self centerToUserLocation];
+//        [self zoomToUserLocation];
         [self displayMapViewAnnotationsForTableViewCells];
     }
 }
@@ -220,8 +252,8 @@
          
          if(_centerUserLocation)
          {
-             [self centerToUserLocation];
-             [self zoomToUserLocation];
+//             [self centerToUserLocation];
+//             [self zoomToUserLocation];
          }
          
          [self.tableView scrollsToTop];
@@ -251,24 +283,24 @@
     }
 }
 
-- (void) zoomMapToFitAnnotations
-{
-    MKMapRect zoomRect = MKMapRectNull;
-    for (id <MKAnnotation> annotation in _mapView.annotations)
-    {
-        MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
-        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
-        if (MKMapRectIsNull(zoomRect)) {
-            zoomRect = pointRect;
-        } else {
-            zoomRect = MKMapRectUnion(zoomRect, pointRect);
-        }
-    }
-    [_mapView setVisibleMapRect:zoomRect animated:NO];
-}
-
-- (void) mapViewDidFinishLoadingMap:(MKMapView *)mapView
-{
-    [self displayMapViewAnnotationsForTableViewCells];
-}
+//- (void) zoomMapToFitAnnotations
+//{
+//    MKMapRect zoomRect = MKMapRectNull;
+//    for (id <MKAnnotation> annotation in _mapView.annotations)
+//    {
+//        MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
+//        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
+//        if (MKMapRectIsNull(zoomRect)) {
+//            zoomRect = pointRect;
+//        } else {
+//            zoomRect = MKMapRectUnion(zoomRect, pointRect);
+//        }
+//    }
+//    [_mapView setVisibleMapRect:zoomRect animated:NO];
+//}
+//
+//- (void) mapViewDidFinishLoadingMap:(MKMapView *)mapView
+//{
+//    [self displayMapViewAnnotationsForTableViewCells];
+//}
 @end
