@@ -25,6 +25,8 @@
 		39DE440917AAE00300675F96 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DE440817AAE00300675F96 /* libz.dylib */; };
 		39DE440B17AAE00D00675F96 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DE440A17AAE00D00675F96 /* OpenGLES.framework */; };
 		39DE440D17AAE02500675F96 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DE440C17AAE02500675F96 /* SystemConfiguration.framework */; };
+		39DE441317AC133800675F96 /* LocationPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 39DE441017AC133800675F96 /* LocationPickerView.m */; };
+		39DE441417AC133800675F96 /* UIImage+Icons.m in Sources */ = {isa = PBXBuildFile; fileRef = 39DE441217AC133800675F96 /* UIImage+Icons.m */; };
 		BE1E46831647CFE7007BDCB2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE1E46821647CFE7007BDCB2 /* CoreLocation.framework */; };
 		BEFC1AF21643F81F00EA2194 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEFC1AF11643F81F00EA2194 /* UIKit.framework */; };
 		BEFC1AF41643F81F00EA2194 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEFC1AF31643F81F00EA2194 /* Foundation.framework */; };
@@ -63,6 +65,10 @@
 		39DE440817AAE00300675F96 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		39DE440A17AAE00D00675F96 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		39DE440C17AAE02500675F96 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		39DE440F17AC133800675F96 /* LocationPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationPickerView.h; sourceTree = "<group>"; };
+		39DE441017AC133800675F96 /* LocationPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationPickerView.m; sourceTree = "<group>"; };
+		39DE441117AC133800675F96 /* UIImage+Icons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Icons.h"; sourceTree = "<group>"; };
+		39DE441217AC133800675F96 /* UIImage+Icons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Icons.m"; sourceTree = "<group>"; };
 		BE1E46821647CFE7007BDCB2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BEFC1AED1643F81F00EA2194 /* ACMapTableSegmented-example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ACMapTableSegmented-example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEFC1AF11643F81F00EA2194 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -114,6 +120,7 @@
 		39DE43DB17AAC59100675F96 /* ACMapTableSegmented */ = {
 			isa = PBXGroup;
 			children = (
+				39DE440E17AC133800675F96 /* LocationPickerView */,
 				39DE43F317AAD8E100675F96 /* ACMapTableSegmentedViewController.h */,
 				39DE43F417AAD8E100675F96 /* ACMapTableSegmentedViewController.m */,
 				39DE43DC17AAC59100675F96 /* KIPullToReveal */,
@@ -141,6 +148,17 @@
 				39DE43E417AAC59100675F96 /* SDSegmentedControl.m */,
 			);
 			path = SDSegmentedControl;
+			sourceTree = "<group>";
+		};
+		39DE440E17AC133800675F96 /* LocationPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				39DE440F17AC133800675F96 /* LocationPickerView.h */,
+				39DE441017AC133800675F96 /* LocationPickerView.m */,
+				39DE441117AC133800675F96 /* UIImage+Icons.h */,
+				39DE441217AC133800675F96 /* UIImage+Icons.m */,
+			);
+			path = LocationPickerView;
 			sourceTree = "<group>";
 		};
 		BEFC1AE21643F81F00EA2194 = {
@@ -289,6 +307,8 @@
 				39DE43E717AAC59100675F96 /* KIPullToRevealViewController.m in Sources */,
 				39DE43E817AAC59100675F96 /* SDSegmentedControl.m in Sources */,
 				39DE43F517AAD91000675F96 /* ACMapTableSegmentedViewController.m in Sources */,
+				39DE441317AC133800675F96 /* LocationPickerView.m in Sources */,
+				39DE441417AC133800675F96 /* UIImage+Icons.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

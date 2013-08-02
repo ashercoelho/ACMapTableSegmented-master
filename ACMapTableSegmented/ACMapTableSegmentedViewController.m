@@ -10,7 +10,7 @@
 
 #import "ACMapTableSegmentedViewController.h"
 
-@interface ACMapTableSegmentedViewController () <UIScrollViewDelegate, UITextFieldDelegate, MKMapViewDelegate>
+@interface ACMapTableSegmentedViewController () <UIScrollViewDelegate, UITextFieldDelegate, GMSMapViewDelegate>
 {
     @private
     UIToolbar *_toolbar;
@@ -19,7 +19,6 @@
     double _lastDragOffset;
     
     @public
-//    MKMapView *_mapView;
     GMSMapView *_googleMapView;
     __weak id <ACMapTableSegmentedDelegate> _mapTableSegmentedDelegate;
     BOOL _centerUserLocation;
@@ -70,6 +69,7 @@
                                                             longitude:151.20
                                                                  zoom:6];
     _googleMapView = [GMSMapView mapWithFrame:CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top) camera:camera];//
+    [_googleMapView setDelegate:self];
     [_googleMapView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];//
     _googleMapView.myLocationEnabled = YES;
     
@@ -178,16 +178,18 @@
     else
         _scrollViewIsDraggedDownwards = NO;
     
-//    NSLog(@"contentOffset:%f",contentOffset);
+    NSLog(@"contentOffset:%f",contentOffset);
 //    NSLog(@"_lastDragOffset:%f",_lastDragOffset);
 //    NSLog(@"_scrollViewIsDraggedDownwards:%c",_scrollViewIsDraggedDownwards);
 
-    NSLog(@"camera:%@",_googleMapView.camera.description);
+//    NSLog(@"camera:%@",_googleMapView.camera.description);
     
     if (!_scrollViewIsDraggedDownwards)
     {
-//        [_googleMapView removeFromSuperview];
+        
+//        [_googleMapView setFrame:CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top)];
         [_googleMapView setFrame:CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top)];
+
     
         
         [_googleMapView setUserInteractionEnabled:NO];
@@ -217,7 +219,7 @@
         
         // Resize map to viewable size
         [_googleMapView setFrame:CGRectMake(0, self.tableView.bounds.origin.y, self.tableView.bounds.size.width, contentOffset*-1)];
-        
+//        [_googleMapView setFrame:CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top)];
 
 //        [self zoomMapToFitAnnotations];
     }
@@ -238,28 +240,7 @@
 }
 
 
-#pragma mark - SearchTextField
-- (void) searchTextFieldBecomeFirstResponder: (id)sender
-{
-    [UIView animateWithDuration:kKIPTRAnimationDuration
-                     animations:^()
-     {
-         [self.tableView setContentInset:UIEdgeInsetsMake(kKIPTRTableViewContentInsetX+50,0,0,0)];
-         [_mapView setFrame:
-          CGRectMake(0, self.tableView.contentInset.top*-1, self.tableView.bounds.size.width, self.tableView.contentInset.top)
-          ];
-         [_mapView setUserInteractionEnabled:NO];
-         
-         if(_centerUserLocation)
-         {
-//             [self centerToUserLocation];
-//             [self zoomToUserLocation];
-         }
-         
-         [self.tableView scrollsToTop];
-     }];
-    [_searchTextField becomeFirstResponder];
-}
+
 #pragma mark - MapView
 - (void) displayMapViewAnnotationsForTableViewCells
 {

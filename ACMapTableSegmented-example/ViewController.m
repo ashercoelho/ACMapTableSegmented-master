@@ -9,7 +9,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <ACMapTableSegmentedDelegate>
+@interface ViewController ()
 {
     NSArray *aLatitudes;
     NSArray *aLongitudes;
@@ -24,7 +24,7 @@
 @implementation ViewController
 
 -(NSArray *)aTitles{
-    switch (self.segmentedControl.selectedSegmentIndex) {
+    switch (self.locationPickerView.segmentedControl.selectedSegmentIndex) {
         case 0:
             return noticias;
             break;
@@ -42,10 +42,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.mapTableSegmentedDelegate = self;
-    self.centerUserLocation = NO;
-    
-	// Do any additional setup after loading the view, typically from a nib.
     
     aLatitudes = [[NSArray alloc] initWithObjects:
                   [NSNumber numberWithDouble:48.122101],
@@ -75,17 +71,23 @@
                    , nil];
     
     noticias = [[NSArray alloc] initWithObjects:
-               @"noticia 1",
-               @"noticia 2",
-               @"noticia 3",
-               @"noticia 4",
-               @"noticia 5",
-               @"noticia 6",
-               @"noticia 7",
-               @"noticia 8",
-               @"noticia 9",
-               @"noticia 10"
-               , nil];
+                @"noticia 1",
+                @"noticia 2",
+                @"noticia 3",
+                @"noticia 4",
+                @"noticia 5",
+                @"noticia 6",
+                @"noticia 7",
+                @"noticia 8",
+                @"noticia 9",
+                @"noticia 8",
+                @"noticia 9",
+                @"noticia 8",
+                @"noticia 9",
+                @"noticia 8",
+                @"noticia 9",
+                @"noticia 10"
+                , nil];
     transito = [[NSArray alloc] initWithObjects:
                @"transito 1",
                @"transito 2",
@@ -110,6 +112,25 @@
                @"usuarios 9",
                @"usuarios 10"
                , nil];
+    
+    // The LocationPickerView can be created programmatically (see below) or
+    // using Storyboards/XIBs (see Storyboard file).
+    self.locationPickerView = [[LocationPickerView alloc] initWithFrame:self.view.bounds];
+    self.locationPickerView.tableViewDataSource = self;
+    self.locationPickerView.tableViewDelegate = self;
+    
+    // Optional parameters
+    self.locationPickerView.delegate = self;
+    self.locationPickerView.shouldCreateHideMapButton = YES;
+    self.locationPickerView.pullToExpandMapEnabled = YES;
+    self.locationPickerView.defaultMapHeight = 220.0; // larger than normal
+    self.locationPickerView.parallaxScrollFactor = 0.3; // little slower than normal.
+    
+    [self.view addSubview:self.locationPickerView];
+}
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.contentView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -137,7 +158,7 @@
     if(!cell)
         cell = (KIPullToRevealCell *)[KIPullToRevealCell cellFromNibNamed:NSStringFromClass([KIPullToRevealCell class])];
 
-    cell.pointLocation = CLLocationCoordinate2DMake([[aLatitudes objectAtIndex:indexPath.row] doubleValue], [[aLongitudes objectAtIndex:indexPath.row] doubleValue]);
+//    cell.pointLocation = CLLocationCoordinate2DMake([[aLatitudes objectAtIndex:indexPath.row] doubleValue], [[aLongitudes objectAtIndex:indexPath.row] doubleValue]);
     cell.titleLabel.text = [NSString stringWithFormat:@"%@", [self.aTitles objectAtIndex:indexPath.row]];
     cell.distanceLabel.text = [NSString stringWithFormat:@"~ 0.0 km"];
     
@@ -147,18 +168,16 @@
 #pragma mark - TableView Delegate
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - PullToReveal Delegate
-- (void) PullToRevealDidSearchFor:(NSString *)searchText
-{
-    NSLog(@"PullToRevealDidSearchFor: %@", searchText);
-}
-
+#pragma mark - LocationPicker Delegate
 -(void)segmentedControlIndexChanged
 {
-    [self.tableView reloadData];
+    [self.locationPickerView.tableView reloadData];
+}
+-(NSArray *)segmentedControlItens{
+    return [NSArray arrayWithObjects: @"Notícias", @"Trânsito", @"Usuários", nil];
 }
 
 @end

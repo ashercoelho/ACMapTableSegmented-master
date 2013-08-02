@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "ACMapTableSegmentedViewController.h"
 #import "KIPullToRevealCell.h"
+#import "LocationPickerView.h"
 
-@interface ViewController : ACMapTableSegmentedViewController
+@interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, LocationPickerViewDelegate>
+
+@property (nonatomic, strong) LocationPickerView *locationPickerView;
 
 @end
