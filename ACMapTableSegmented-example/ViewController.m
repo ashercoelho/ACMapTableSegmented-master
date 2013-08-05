@@ -16,7 +16,12 @@
     NSArray *noticias;
     NSArray *transito;
     NSArray *usuarios;
+    
+    CGFloat startContentOffset;
+    CGFloat lastContentOffset;
+    BOOL hidden;
 }
+
 @property (nonatomic, strong) NSArray * aTitles;
 
 @end
@@ -128,6 +133,23 @@
     
     [self.view addSubview:self.locationPickerView];
 }
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:hidden
+                                             animated:YES];
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+//    [self.tabBarController setTabBarHidden:hidden
+//                                  animated:NO];
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.contentView.backgroundColor = [UIColor whiteColor];
@@ -179,5 +201,72 @@
 -(NSArray *)segmentedControlItens{
     return [NSArray arrayWithObjects: @"Notícias", @"Trânsito", @"Usuários", nil];
 }
+
+#pragma mark - The Magic!
+
+-(void)expand
+{
+    if(hidden)
+        return;
+    
+    hidden = YES;
+    
+//    [self.tabBarController setTabBarHidden:YES
+//                                  animated:YES];
+    
+    [self.navigationController setNavigationBarHidden:YES
+                                             animated:YES];
+}
+
+-(void)contract
+{
+    if(!hidden)
+        return;
+    
+    hidden = NO;
+    
+//    [self.tabBarController setTabBarHidden:NO
+//                                  animated:YES];
+    
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
+}
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    startContentOffset = lastContentOffset = scrollView.contentOffset.y;
+    //NSLog(@"scrollViewWillBeginDragging: %f", scrollView.contentOffset.y);
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat currentOffset = scrollView.contentOffset.y;
+    CGFloat differenceFromStart = startContentOffset - currentOffset;
+    CGFloat differenceFromLast = lastContentOffset - currentOffset;
+    lastContentOffset = currentOffset;
+    
+    
+    
+    if((differenceFromStart) < 0)
+    {
+        // scroll up
+//        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+            [self expand];
+    }
+    else {
+//        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+            [self contract];
+    }
+    
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    [self contract];
+    return YES;
+}
+
 
 @end

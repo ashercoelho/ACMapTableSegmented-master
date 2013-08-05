@@ -11,7 +11,7 @@
 #import "KIPullToRevealCell.h"
 #import "LocationPickerView.h"
 
-@interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, LocationPickerViewDelegate>
+@interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, LocationPickerViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) LocationPickerView *locationPickerView;
 

@@ -279,17 +279,19 @@
     if (self.tableView.numberOfSections) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
-    
     CGRect newMapFrame = self.mapView.frame;
     newMapFrame = CGRectMake(self.defaultMapViewFrame.origin.x,
                              self.defaultMapViewFrame.origin.y + (self.defaultMapHeight * self.parallaxScrollFactor),
                              self.defaultMapViewFrame.size.width,
                              self.defaultMapHeight + (self.defaultMapHeight * self.parallaxScrollFactor * 2));
     self.mapView.frame = newMapFrame;
-    
     [self bringSubviewToFront:self.mapView];
     [self insertSubview:self.closeMapButton aboveSubview:self.mapView];
     
+
+    [self.toolbar removeFromSuperview];
+    [self.toolbar setFrame:CGRectMake(0, 250, self.tableView.bounds.size.width, 50)];
+    [self insertSubview:self.toolbar aboveSubview:self.mapView];
     if(animated == YES)
     {
         [UIView animateWithDuration:0.3
@@ -297,12 +299,11 @@
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
                              self.mapView.frame = self.bounds;
-                             [self.toolbar removeFromSuperview];
-                             [self.toolbar setFrame:CGRectMake(0, self.tableView.bounds.size.height-50, self.tableView.bounds.size.width, 50)];
-                             [self.tableView addSubview:self.toolbar];
+                             [self.toolbar setFrame:CGRectMake(0, self.frame.size.height-50, self.tableView.bounds.size.width, 50)];
                          } completion:^(BOOL finished) {
                              self.isMapAnimating = NO;
                              _isMapFullScreen = YES;
+//                                 NSLog(@"map.frame.origin.y: %f", self.mapView.frame.origin.y);
 //                             self.mapView.scrollEnabled = YES;
 //                             self.mapView.zoomEnabled = YES;
                              
@@ -318,6 +319,9 @@
     else
     {
         self.mapView.frame = self.bounds;
+        [self.toolbar removeFromSuperview];
+        [self.toolbar setFrame:CGRectMake(0, self.mapView.bounds.size.height-50, self.tableView.bounds.size.width, 50)];
+        [self.mapView addSubview:self.toolbar];
         self.isMapAnimating = NO;
         _isMapFullScreen = YES;
 //        self.mapView.scrollEnabled = YES;
@@ -360,6 +364,10 @@
     self.tableView.frame = CGRectMake(0, 480, tempFrame.size.width, tempFrame.size.height);
     [self insertSubview:self.mapView belowSubview:self.tableView];
     
+    [self.toolbar removeFromSuperview];
+    [self.toolbar setFrame:CGRectMake(0, _defaultMapHeight-50, self.tableView.bounds.size.width, 50)];
+    [self.tableView addSubview:self.toolbar];
+    
     if(animated == YES)
     {
         [UIView animateWithDuration:0.4
@@ -367,6 +375,9 @@
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
                              self.mapView.frame = self.defaultMapViewFrame;
+                             [self.toolbar removeFromSuperview];
+                             [self.toolbar setFrame:CGRectMake(0, _defaultMapHeight-50, self.tableView.bounds.size.width, 50)];
+                             [self.tableView addSubview:self.toolbar];
                              self.tableView.frame = tempFrame;
                          } completion:^(BOOL finished) {
                              
@@ -438,7 +449,6 @@
     if ((self.isMapFullScreen == NO) &&
         (self.isMapAnimating == NO)) {
         CGFloat mapFrameYAdjustment = 0.0;
-        NSLog(@"scrollOffset: %f",scrollOffset);
         if(scrollOffset >= 170)//Quando o toolbar encosta no topo
         {
             [self.toolbar removeFromSuperview];
@@ -485,5 +495,6 @@
     if(self.delegate && [self.delegate respondsToSelector:@selector(segmentedControlIndexChanged)])
         [self.delegate segmentedControlIndexChanged];
 }
+
 
 @end
