@@ -15,6 +15,10 @@
     IBOutlet UIImageView *_iconImageView;
     IBOutlet UILabel *_titleLabel;
     IBOutlet UILabel *_distanceLabel;
+    __weak IBOutlet UIImageView *a;
+    __weak IBOutlet UILabel *b;
+    __weak IBOutlet UILabel *c;
+    __weak IBOutlet UIImageView *d;
 }
 @end
 

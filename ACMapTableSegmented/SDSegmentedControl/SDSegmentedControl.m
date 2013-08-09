@@ -79,6 +79,7 @@ const CGFloat kSDSegmentedControlScrollOffset = 20;
 
 - (void)commonInit
 {
+    
     // Default height
     CGRect frame = self.frame;
     frame.size.height = 43;

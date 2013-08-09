@@ -18,4 +18,9 @@
 @property (nonatomic, retain) UILabel *titleLabel;
 @property (nonatomic, retain) UILabel *distanceLabel;
 
+@property (nonatomic, retain)  IBOutlet UIImageView *a;
+@property (nonatomic, retain)  IBOutlet UILabel *b;
+@property (nonatomic, retain)  IBOutlet UILabel *c;
+@property (nonatomic, retain)  IBOutlet UIImageView *d;
+
 @end

@@ -11,7 +11,6 @@
 
 @interface LocationPickerView ()
 
-@property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic) BOOL isMapAnimating;
 @property (nonatomic) CGRect defaultMapViewFrame;
 @property (nonatomic, strong) UITapGestureRecognizer *mapTapGesture;
@@ -104,9 +103,9 @@
     
     if (!self.mapView) {
         self.defaultMapViewFrame = CGRectMake(0.0,
-                                              -self.defaultMapHeight * self.parallaxScrollFactor * 2,
+                                              -self.defaultMapHeight * self.parallaxScrollFactor * 2 + 40,
                                               self.tableView.frame.size.width,
-                                              self.defaultMapHeight + (self.defaultMapHeight * self.parallaxScrollFactor * 4));
+                                              self.defaultMapHeight + (self.defaultMapHeight * self.parallaxScrollFactor * 4) - 40);
         
         
         // Create a GMSCameraPosition that tells the map to display the
@@ -128,12 +127,6 @@
         marker.snippet = @"Australia";
         marker.map = self.mapView;
         
-        
-        
-//        self.mapView.scrollEnabled = NO;
-//        self.mapView.zoomEnabled = NO;
-
-        
         if ([self.delegate respondsToSelector:@selector(locationPicker:mapViewDidLoad:)]) {
             [self.delegate locationPicker:self mapViewDidLoad:self.mapView];
         }
@@ -143,21 +136,6 @@
         }
     }
 
-    if (!self.toolbar) {
-        self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, _defaultMapHeight-50, self.tableView.bounds.size.width, 50)];
-        self.toolbar.tintColor = [UIColor lightTextColor];
-        [self.toolbar setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-        
-        self.segmentedControl = [[SDSegmentedControl alloc] initWithItems:[self.delegate segmentedControlItens]];
-        [self.segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged) forControlEvents:UIControlEventValueChanged];
-        self.segmentedControl.frame = CGRectMake(0, 0, self.toolbar.bounds.size.width, self.toolbar.bounds.size.height);
-        [self.segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    
-        [self.toolbar addSubview:self.segmentedControl];
-        [self.tableView insertSubview:self.toolbar aboveSubview:self.tableView];
-    }
-
-    
     // Add tap gesture to table
     if (!self.mapTapGesture) {
         self.mapTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -231,7 +209,7 @@
 {
     if (!self.closeMapButton) {
         self.closeMapButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.closeMapButton.frame = CGRectMake(14.0, 14.0, 42.0, 42.0);
+        self.closeMapButton.frame = CGRectMake(278.0, 50.0, 42.0, 42.0);
         [self.closeMapButton setImage:[UIImage imageForXIcon] forState:UIControlStateNormal];
         [self.closeMapButton setImage:[UIImage imageForXIcon] forState:UIControlStateHighlighted];
         [self.closeMapButton addTarget:self action:@selector(hideMapView:) forControlEvents:UIControlEventTouchUpInside];
@@ -288,10 +266,6 @@
     [self bringSubviewToFront:self.mapView];
     [self insertSubview:self.closeMapButton aboveSubview:self.mapView];
     
-
-    [self.toolbar removeFromSuperview];
-    [self.toolbar setFrame:CGRectMake(0, 250, self.tableView.bounds.size.width, 50)];
-    [self insertSubview:self.toolbar aboveSubview:self.mapView];
     if(animated == YES)
     {
         [UIView animateWithDuration:0.3
@@ -299,14 +273,9 @@
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
                              self.mapView.frame = self.bounds;
-                             [self.toolbar setFrame:CGRectMake(0, self.frame.size.height-50, self.tableView.bounds.size.width, 50)];
                          } completion:^(BOOL finished) {
                              self.isMapAnimating = NO;
-                             _isMapFullScreen = YES;
-//                                 NSLog(@"map.frame.origin.y: %f", self.mapView.frame.origin.y);
-//                             self.mapView.scrollEnabled = YES;
-//                             self.mapView.zoomEnabled = YES;
-                             
+                             _isMapFullScreen = YES;                             
                              if ([self.delegate respondsToSelector:@selector(locationPicker:mapViewDidExpand:)]) {
                                  [self.delegate locationPicker:self mapViewDidExpand:self.mapView];
                              }
@@ -319,13 +288,8 @@
     else
     {
         self.mapView.frame = self.bounds;
-        [self.toolbar removeFromSuperview];
-        [self.toolbar setFrame:CGRectMake(0, self.mapView.bounds.size.height-50, self.tableView.bounds.size.width, 50)];
-        [self.mapView addSubview:self.toolbar];
         self.isMapAnimating = NO;
         _isMapFullScreen = YES;
-//        self.mapView.scrollEnabled = YES;
-//        self.mapView.zoomEnabled = YES;
         
         if ([self.delegate respondsToSelector:@selector(locationPicker:mapViewDidExpand:)]) {
             [self.delegate locationPicker:self mapViewDidExpand:self.mapView];
@@ -353,8 +317,7 @@
     }
     
     self.isMapAnimating = animated;
-//    self.mapView.scrollEnabled = NO;
-//    self.mapView.zoomEnabled = NO;
+    
     [self.tableView.tableHeaderView addGestureRecognizer:self.mapTapGesture];
     
     // Store the correct tableViewFrame.
@@ -364,10 +327,6 @@
     self.tableView.frame = CGRectMake(0, 480, tempFrame.size.width, tempFrame.size.height);
     [self insertSubview:self.mapView belowSubview:self.tableView];
     
-    [self.toolbar removeFromSuperview];
-    [self.toolbar setFrame:CGRectMake(0, _defaultMapHeight-50, self.tableView.bounds.size.width, 50)];
-    [self.tableView addSubview:self.toolbar];
-    
     if(animated == YES)
     {
         [UIView animateWithDuration:0.4
@@ -375,9 +334,6 @@
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
                              self.mapView.frame = self.defaultMapViewFrame;
-                             [self.toolbar removeFromSuperview];
-                             [self.toolbar setFrame:CGRectMake(0, _defaultMapHeight-50, self.tableView.bounds.size.width, 50)];
-                             [self.tableView addSubview:self.toolbar];
                              self.tableView.frame = tempFrame;
                          } completion:^(BOOL finished) {
                              
@@ -449,18 +405,9 @@
     if ((self.isMapFullScreen == NO) &&
         (self.isMapAnimating == NO)) {
         CGFloat mapFrameYAdjustment = 0.0;
-        if(scrollOffset >= 170)//Quando o toolbar encosta no topo
-        {
-            [self.toolbar removeFromSuperview];
-            [self.toolbar setFrame:CGRectMake(0, scrollOffset, self.tableView.bounds.size.width, 50)];
-            [self.tableView addSubview:self.toolbar];
-        }
+        
         // If the user is pulling down
         if (scrollOffset < 0) {
-            [self.toolbar removeFromSuperview];
-            [self.toolbar setFrame:CGRectMake(0, _defaultMapHeight-50, self.tableView.bounds.size.width, 50)];
-            [self.tableView insertSubview:self.toolbar aboveSubview:self.tableView];
-            
             // Pull to expand map?
             if (self.pullToExpandMapEnabled &&
                 (self.isMapAnimating == NO) &&
@@ -490,11 +437,6 @@
     }
 }
 
--(void)segmentedControlIndexChanged
-{
-    if(self.delegate && [self.delegate respondsToSelector:@selector(segmentedControlIndexChanged)])
-        [self.delegate segmentedControlIndexChanged];
-}
 
 
 @end

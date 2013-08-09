@@ -6,7 +6,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SDSegmentedControl.h"
 #import <GoogleMaps/GoogleMaps.h>
 
 
@@ -19,7 +18,6 @@ typedef void (^LocationPickerViewCompletionBlock)(LocationPickerView *locationPi
 
 @interface LocationPickerView : UIView <UIScrollViewDelegate>
 
-@property (nonatomic, retain) SDSegmentedControl *segmentedControl;
 
 /** How much of the screen the map takes up initially and the height
  it returns to after scrolling is done. By default this is set to
@@ -91,10 +89,6 @@ typedef void (^LocationPickerViewCompletionBlock)(LocationPickerView *locationPi
 
 
 @protocol LocationPickerViewDelegate <NSObject>
-
-/** Called when the segmentedControl index changes. */
--(void)segmentedControlIndexChanged;
--(NSArray *)segmentedControlItens;
 
 @optional
 
