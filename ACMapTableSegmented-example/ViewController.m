@@ -10,6 +10,8 @@
 #import "ViewController.h"
 #import "SVPullToRefresh.h"
 
+#define ButtonHeight 135
+
 @interface ViewController ()
 {
     NSArray *noticias;
@@ -68,14 +70,14 @@
     self.locationPickerView.delegate = self;
     self.locationPickerView.shouldCreateHideMapButton = YES;
     self.locationPickerView.pullToExpandMapEnabled = NO;
-    self.locationPickerView.defaultMapHeight = 170.0;
+    self.locationPickerView.defaultMapHeight = 140.0;
     self.locationPickerView.parallaxScrollFactor = 0.3;
     
     [self.view insertSubview:self.locationPickerView belowSubview:self.buttonsView];
     
     
 //    //Segmented Control
-//    self.segmentedControl = [[SDSegmentedControl alloc] initWithItems:[self segmentedControlItens]];
+//    self.segmentedControl = [[SDSegmentedControl alloc] initWithItems:[NSArray arrayWithObjects: @"Notícias", @"Trânsito", @"Colabore", nil]];
 //    [self.segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged) forControlEvents:UIControlEventValueChanged];
 //    self.segmentedControl.frame = CGRectMake(0, 0, self.locationPickerView.tableView.bounds.size.width, 40);
 //    [self.segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
@@ -105,7 +107,7 @@
         });
     }];
     
-    [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - 95, 95, 95)];
+    [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - ButtonHeight, ButtonHeight, ButtonHeight)];
 
     //Adding shadow to the map
     UIImageView *shadowView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, self.locationPickerView.tableView.tableHeaderView.frame.size.height - 8, self.locationPickerView.tableView.frame.size.width, 8)];
@@ -154,16 +156,17 @@
     cell.c.hidden = false;
     cell.d.hidden = false;
     
-    if (indexPath.row == pos1 || indexPath.row == pos2 || indexPath.row == pos3) {
-        cell.iconImageView.image = [UIImage imageNamed:@"banner"];
-        
-        cell.titleLabel.hidden = true;
-        cell.distanceLabel.hidden = true;
-        cell.a.hidden = true;
-        cell.b.hidden = true;
-        cell.c.hidden = true;
-        cell.d.hidden = true;
-    }else if ([indexPath row] % 2 == 0) {
+//    if (indexPath.row == pos1 || indexPath.row == pos2 || indexPath.row == pos3) {
+//        cell.iconImageView.image = [UIImage imageNamed:@"banner"];
+//        
+//        cell.titleLabel.hidden = true;
+//        cell.distanceLabel.hidden = true;
+//        cell.a.hidden = true;
+//        cell.b.hidden = true;
+//        cell.c.hidden = true;
+//        cell.d.hidden = true;
+//    }else
+    if ([indexPath row] % 2 == 0) {
         [cell.iconImageView setImage:[UIImage imageNamed:@"bg-cel-transito-transparent"]];
     } else {
         [cell.iconImageView setImage:[UIImage imageNamed:@"bg-cel-noticias-cinza"]];
@@ -171,10 +174,17 @@
     
     return cell;
 }
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIImageView *image = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"banner"]];
+    return image;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 50;
+}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (!self.segmentedControl) {
-        self.segmentedControl = [[SDSegmentedControl alloc] initWithItems:[self segmentedControlItens]];
+        self.segmentedControl = [[SDSegmentedControl alloc] initWithItems:[NSArray arrayWithObjects: @"Notícias", @"Trânsito", @"Colabore", nil]];
         [self.segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged) forControlEvents:UIControlEventValueChanged];
         self.segmentedControl.frame = CGRectMake(0, 0, self.locationPickerView.tableView.bounds.size.width, 40);
         [self.segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
@@ -193,11 +203,6 @@
 }
 
 #pragma mark - LocationPicker Delegate
-
--(NSArray *)segmentedControlItens{
-    return [NSArray arrayWithObjects: @"Notícias", @"Trânsito", @"Colabore", nil];
-}
-
 - (void)locationPicker:(LocationPickerView *)locationPicker
      mapViewWillExpand:(GMSMapView *)mapView{
     [self expand];
@@ -205,6 +210,8 @@
 - (void)locationPicker:(LocationPickerView *)locationPicker mapViewWillBeHidden:(GMSMapView *)mapView{
     [self contract];
 }
+
+#pragma mark - Private Methods
 
 -(void)segmentedControlIndexChanged
 {
@@ -216,13 +223,13 @@
         [UIView transitionWithView:self.view
                           duration:0.3
                            options:UIViewAnimationOptionCurveLinear
-                        animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height, 95, 95)];}
+                        animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height, ButtonHeight, ButtonHeight)];}
                         completion:^(BOOL finished){
                             [self.buttonImage setImage:[UIImage imageNamed:@"alertaNoticia"]];
                             [UIView transitionWithView:self.view
                                               duration:0.3
                                                options:UIViewAnimationOptionCurveLinear
-                                            animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - 95, 95, 95)];}
+                                            animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - ButtonHeight, ButtonHeight, ButtonHeight)];}
                                             completion:^(BOOL finished){}
                              ];
                         }
@@ -237,12 +244,12 @@
         [UIView transitionWithView:self.view
                           duration:0.3
                            options:UIViewAnimationOptionCurveLinear
-                        animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height, 95, 95)];}
+                        animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height, ButtonHeight, ButtonHeight)];}
                         completion:^(BOOL finished){
                             [UIView transitionWithView:self.view
                                               duration:0.3
                                                options:UIViewAnimationOptionCurveLinear
-                                            animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - 95, 95, 95)];}
+                                            animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - ButtonHeight, ButtonHeight, ButtonHeight)];}
                                             completion:^(BOOL finished){}
                              ];
                         }
@@ -255,12 +262,12 @@
         [UIView transitionWithView:self.view
                           duration:0.3
                            options:UIViewAnimationOptionCurveLinear
-                        animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height, 95, 95)];}
+                        animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height, ButtonHeight, ButtonHeight)];}
                         completion:^(BOOL finished){
                             [UIView transitionWithView:self.view
                                               duration:0.3 
                                                options:UIViewAnimationOptionCurveLinear
-                                            animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - 95, 95, 95)];}
+                                            animations:^{ [self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - ButtonHeight, ButtonHeight, ButtonHeight)];}
                                             completion:^(BOOL finished){}
                              ];
                         }
@@ -270,8 +277,6 @@
     [self.locationPickerView.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
     [self contract];
 }
-
-#pragma mark - Private Methods
 
 -(void)expand
 {
@@ -283,7 +288,7 @@
     [UIView transitionWithView:self.view
                       duration:UINavigationControllerHideShowBarDuration
                        options:UIViewAnimationOptionCurveLinear
-                    animations:^{[self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height, 95, 95)];}
+                    animations:^{[self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height, ButtonHeight, ButtonHeight)];}
                     completion:^(BOOL finished){}
      ];
 }
@@ -298,7 +303,7 @@
     [UIView transitionWithView:self.view
                       duration:UINavigationControllerHideShowBarDuration
                        options:UIViewAnimationOptionCurveLinear
-                    animations:^{[self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - 95, 95, 95)];}
+                    animations:^{[self.buttonsView setFrame:CGRectMake(112, self.view.frame.size.height - ButtonHeight, ButtonHeight, ButtonHeight)];}
                     completion:^(BOOL finished){}
      ];
     
