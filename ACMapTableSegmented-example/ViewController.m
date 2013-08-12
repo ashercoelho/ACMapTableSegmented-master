@@ -72,6 +72,15 @@
     self.locationPickerView.parallaxScrollFactor = 0.3;
     
     [self.view insertSubview:self.locationPickerView belowSubview:self.buttonsView];
+    
+    
+//    //Segmented Control
+//    self.segmentedControl = [[SDSegmentedControl alloc] initWithItems:[self segmentedControlItens]];
+//    [self.segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged) forControlEvents:UIControlEventValueChanged];
+//    self.segmentedControl.frame = CGRectMake(0, 0, self.locationPickerView.tableView.bounds.size.width, 40);
+//    [self.segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+//    self.segmentedControl.tintColor = [UIColor clearColor];
+//   [self.view  addSubview:self.segmentedControl];
 
 }
 
@@ -102,15 +111,8 @@
     UIImageView *shadowView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, self.locationPickerView.tableView.tableHeaderView.frame.size.height - 8, self.locationPickerView.tableView.frame.size.width, 8)];
     shadowView.image = [UIImage imageNamed:@"shadow-inverted"];
     [self.locationPickerView.tableView.tableHeaderView  addSubview:shadowView];
-    
-    //Segmented Control
-    self.segmentedControl = [[SDSegmentedControl alloc] initWithItems:[self segmentedControlItens]];
-    [self.segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged) forControlEvents:UIControlEventValueChanged];
-    self.segmentedControl.frame = CGRectMake(0, 0, self.locationPickerView.tableView.bounds.size.width, 40);
-    [self.segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    self.segmentedControl.tintColor = [UIColor clearColor];
-    [self.view  addSubview:self.segmentedControl];
 }
+
 
 #pragma mark - TableView Datasource
 
@@ -168,6 +170,20 @@
     }
     
     return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (!self.segmentedControl) {
+        self.segmentedControl = [[SDSegmentedControl alloc] initWithItems:[self segmentedControlItens]];
+        [self.segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged) forControlEvents:UIControlEventValueChanged];
+        self.segmentedControl.frame = CGRectMake(0, 0, self.locationPickerView.tableView.bounds.size.width, 40);
+        [self.segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+        self.segmentedControl.tintColor = [UIColor clearColor];
+    }
+    return self.segmentedControl;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 50;
 }
 
 #pragma mark - TableView Delegate
@@ -234,7 +250,7 @@
     }else{
         pos1 = -1; pos2 = -1; pos3 = -1;
         [self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"banner"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-        [self.navigationController setToolbarHidden:NO animated:YES];
+//        [self.navigationController setToolbarHidden:NO animated:YES];
         
         [UIView transitionWithView:self.view
                           duration:0.3

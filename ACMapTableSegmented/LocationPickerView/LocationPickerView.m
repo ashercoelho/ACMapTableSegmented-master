@@ -103,9 +103,9 @@
     
     if (!self.mapView) {
         self.defaultMapViewFrame = CGRectMake(0.0,
-                                              -self.defaultMapHeight * self.parallaxScrollFactor * 2 + 40,
+                                              -self.defaultMapHeight * self.parallaxScrollFactor * 2,
                                               self.tableView.frame.size.width,
-                                              self.defaultMapHeight + (self.defaultMapHeight * self.parallaxScrollFactor * 4) - 40);
+                                              self.defaultMapHeight + (self.defaultMapHeight * self.parallaxScrollFactor * 4));
         
         
         // Create a GMSCameraPosition that tells the map to display the
@@ -209,7 +209,7 @@
 {
     if (!self.closeMapButton) {
         self.closeMapButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.closeMapButton.frame = CGRectMake(278.0, 50.0, 42.0, 42.0);
+        self.closeMapButton.frame = CGRectMake(278.0, 0.0, 42.0, 42.0);
         [self.closeMapButton setImage:[UIImage imageForXIcon] forState:UIControlStateNormal];
         [self.closeMapButton setImage:[UIImage imageForXIcon] forState:UIControlStateHighlighted];
         [self.closeMapButton addTarget:self action:@selector(hideMapView:) forControlEvents:UIControlEventTouchUpInside];
